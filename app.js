@@ -35,6 +35,17 @@ app.get('/', function(req, res){
 	});
 });
 
+app.post('/add', function(req, res){
+	pg.connect(connect, function(err, client, done){
+		if(err) {
+			return console.error('error fetching client from pool', err);
+		}
+		client.query('INSERT INTO recipes(name, ingredients, directions) VALUES($1, $2, $3)', [req.body.name, req.body.ingredients, req.body.directions]);
+		done();
+		res.redirect('/');
+	});
+})
+
 app.listen(3000, function(){
 	console.log('listening on 3000');
 });
